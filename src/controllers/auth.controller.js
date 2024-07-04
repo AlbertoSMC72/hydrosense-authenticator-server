@@ -1,6 +1,8 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { getUserService } from '../services/users.service.js';
+import { getCompanyService } from '../services/companys.service.js';
+import e from 'express';
 
 const secretJWT = process.env.SECRET_JWT || "eNbnClWA~c$~DI7X8fJ";
 
@@ -8,8 +10,9 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
 
     const userFound = await getUserService(email);
-    
-    if (!userFound) {
+    const companyFound = await getCompanyService(email);
+
+    if (!userFound && !companyFound) {
         return res.status(401).json({
             message: "Incorrect username or password"
         });
@@ -23,18 +26,29 @@ export const login = async (req, res) => {
         });
     }
 
-    console.log("Password is correct");
-
-    const payload = {
-        user: {
-            _id: userFound._id
+    if (userFound) {
+        const payload = {
+            user: {
+                id_user: userFound.id_user
+            }
         }
+        const token = jwt.sign(payload, secretJWT, { expiresIn: '3h' });
+        return res.status(200).json({
+            user: userFound,
+            token: token,
+            rol: userFound.position
+        });
+    } else {
+        const payload = {
+            company: {
+                id_company: companyFound.id_company
+            }
+        }
+        const token = jwt.sign(payload, secretJWT, { expiresIn: '3h' });
+        return res.status(200).json({
+            company: companyFound,
+            token: token,
+            rol: "Admin"
+        });
     }
-
-    const token = jwt.sign(payload, secretJWT, { expiresIn: '3h' });
-
-    return res.status(200).json({
-        message: "Access granted",
-        token: token
-    });
 }

@@ -1,6 +1,5 @@
 import { validateUser, validateUserUpdate } from '../models/users.model.js';
 import config from '../config/config.js';
-// reposotory of mysql
 
 
 export const getUsers = async () => {

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import usersRouter from "./user.route.js"
 import loguinRouter from "./auth.route.js"
+import companyRouter from "./company.route.js";
 
 const router = Router();
 const prefijo = "app";
@@ -8,5 +9,6 @@ const prefijo = "app";
 
 router.use(`/${prefijo}/user`, usersRouter)
 router.use(`/${prefijo}/auth`, loguinRouter);
+router.use(`/${prefijo}/company`, companyRouter);
 
 export default router;
