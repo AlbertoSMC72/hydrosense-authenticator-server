@@ -20,6 +20,7 @@ app.use((req, res) => {
 });
 
 config.connect().then(() => {
+    console.log("Database connected");
     app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`);
     });

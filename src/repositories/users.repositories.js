@@ -1,41 +1,56 @@
-import User from '../models/users.model.js';
+import { validateUser, validateUserUpdate } from '../models/users.model.js';
+import config from '../config/config.js';
+// reposotory of mysql
+
 
 export const getUsers = async () => {
     try {
-        return await User.find().exec();
+        const result = await config.query('SELECT * FROM users');
+        return result[0];
     } catch (error) {
-        throw new Error(`Error fetching users: ${error.message}`);
+        throw new Error(error.message);
     }
 };
 
 export const getUser = async (email) => {
     try {
-        return await User.findOne({ email: email }).exec(); // Asegúrate de buscar por email correctamente
+        const result = await config.query('SELECT * FROM users WHERE email = ?', [email]);
+        return result[0];
     } catch (error) {
-        throw new Error(`Error fetching user with email ${email}: ${error.message}`);
+        throw new Error(error.message);
     }
 };
 
 export const createUser = async (user) => {
     try {
-        return await User.create(user);
+        validateUser(user);
+        const result = await config.query('INSERT INTO users SET ?', [user]);
+        return result[0];
     } catch (error) {
-        throw new Error(`Error creating user: ${error.message}`);
+        throw new Error(error.message);
     }
 };
 
 export const updateUser = async (email, user) => { 
     try {
-        return await User.findOneAndUpdate({ email: email }, user, { new: true }).exec();
+        validateUserUpdate(user);
+        const oldInfo = getUser(email);
+        if (!oldInfo) {
+            throw new Error('User not found');
+        }
+        const updateInfo = { ...oldInfo, ...user };
+        const result = await config.query('UPDATE users SET ? WHERE email = ?', [updateInfo, email]);
+        return result[0];
     } catch (error) {
-        throw new Error(`Error updating user with email ${email}: ${error.message}`);
+        throw new Error(error.message);
     }
 };
 
 export const deleteUser = async (email) => { 
     try {
-        return await User.findOneAndDelete({ email: email }).exec();
+        const result = await config.query('DELETE FROM users WHERE email = ?', [email]);
+        return result[0];
     } catch (error) {
-        throw new Error(`Error deleting user with email ${email}: ${error.message}`);
+        throw new Error(error.message);
     }
 };

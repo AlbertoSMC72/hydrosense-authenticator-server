@@ -1,18 +1,14 @@
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
-
+import dotenv from 'dotenv'
+import { createConnection } from 'mysql2';
 dotenv.config();
 
-async function connect() {
-    try {
-        await mongoose.connect(process.env.URL_DB, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
-        console.log("Conectado a MongoDB");
-    } catch (error) {
-        console.log("Error al conectar a MongoDB:", error);
-    }
+const db = {
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    host: process.env.DB_HOST
 }
 
-export default { connect };
+const config = createConnection(db);
+
+export default config.promise();

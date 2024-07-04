@@ -1,32 +1,33 @@
-import mongoose from 'mongoose';
+import zod from 'zod';
 
-const userSchema = new mongoose.Schema({
-    name: {
-        type: String,
-        required: true
-    },
-    surname: {
-        type: String,
-        required: false
-    },
-    email: {
-        type: String,
-        required: true,
-        unique: true, 
-        match: [/.+\@.+\..+/, "Please fill a valid email address"] 
-    },
-    password: {
-        type: String,
-        required: true,
-        minlength: 6 
-    },
-    position: {
-        type: String,
-        required: true,
-        default: 'user'
-    },
+const User = zod.object({
+    name: zod.string({
+        message: 'Name is required',
+    }),
+    email: zod.string({
+        message: 'Email is required',
+    }).email(),
+    password: zod.string({
+        message: 'Password is required',
+    }).min(8),
+    position: zod.string({
+        message: 'Position is required',
+    }),
+    company_ref: zod.number({
+        message: 'Company reference is required',
+    }),
 });
 
-const User = mongoose.model('User', userSchema);
+export function validateUser(user) {
+    const { error } = User.safeParse(user);
+    if (error) {
+        throw new Error(error.message);
+    }
+}
 
-export default User;
+export function validateUserUpdate(user) {
+    const { error } = User.partial().safeParse(user);
+    if (error) {
+        throw new Error(error.message);
+    }
+}
