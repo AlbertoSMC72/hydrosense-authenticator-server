@@ -2,7 +2,6 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { getUserService } from '../services/users.service.js';
 import { getCompanyService } from '../services/companys.service.js';
-import e from 'express';
 
 const secretJWT = process.env.SECRET_JWT || "eNbnClWA~c$~DI7X8fJ";
 

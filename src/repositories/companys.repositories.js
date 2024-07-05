@@ -1,5 +1,5 @@
-import { validateCompany } from "../models/companys.model";
-import config from "../config/config";
+import { validateCompany } from "../models/companys.model.js";
+import config from "../config/config.js";
 
 export const getCompany = async (email) => {
     try {

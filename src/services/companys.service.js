@@ -1,5 +1,5 @@
-import { getCompany, createCompany } from "../repositories/companys.repositories";
-import { validateCompany } from "../models/companys.model";
+import { getCompany, createCompany } from "../repositories/companys.repositories.js";
+import { validateCompany } from "../models/companys.model.js";
 import bcrypt from 'bcrypt';
 
 export const getCompanyService = async (email) => {

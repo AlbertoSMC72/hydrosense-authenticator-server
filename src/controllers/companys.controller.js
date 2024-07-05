@@ -1,4 +1,4 @@
-import { getCompanyService, createCompanyService } from "../services/companys.service";
+import { getCompanyService, createCompanyService } from "../services/companys.service.js";
 
 export const getCompanyController = async (req, res) => {
     const { email } = req.params;
