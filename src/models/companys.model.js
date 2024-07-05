@@ -13,8 +13,5 @@ const companySchema = zod.object({
 });
 
 export function validateCompany(company) {
-    const { error } = companySchema.safeParse(company);
-    if (error) {
-        throw new Error(error.message);
-    }
+    return companySchema.parse(company);
 }

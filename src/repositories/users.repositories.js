@@ -1,4 +1,3 @@
-import { validateUser, validateUserUpdate } from '../models/users.model.js';
 import config from '../config/config.js';
 
 
@@ -22,7 +21,6 @@ export const getUser = async (email) => {
 
 export const createUser = async (user) => {
     try {
-        validateUser(user);
         const result = await config.query('INSERT INTO users SET ?', [user]);
         return result[0];
     } catch (error) {
@@ -32,7 +30,6 @@ export const createUser = async (user) => {
 
 export const updateUser = async (email, user) => { 
     try {
-        validateUserUpdate(user);
         const oldInfo = getUser(email);
         if (!oldInfo) {
             throw new Error('User not found');

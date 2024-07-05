@@ -1,4 +1,3 @@
-import { validateCompany } from "../models/companys.model.js";
 import config from "../config/config.js";
 
 export const getCompany = async (email) => {
@@ -12,7 +11,6 @@ export const getCompany = async (email) => {
 
 export const createCompany = async (company) => {
     try {
-        validateCompany(company);
         const result = await config.query('INSERT INTO companys SET ?', [company]);
         return result[0];
     } catch (error) {
