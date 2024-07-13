@@ -17,7 +17,7 @@ export const login = async (req, res) => {
         });
     }
 
-    const isCorrectPass = bcrypt.compareSync(password, userFound.password)
+    const isCorrectPass = userFound && bcrypt.compareSync(password, userFound.password);
 
     if (!isCorrectPass) {
         return res.status(401).json({
