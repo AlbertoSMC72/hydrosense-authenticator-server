@@ -17,7 +17,16 @@ export const login = async (req, res) => {
         });
     }
 
-    const isCorrectPass = userFound && bcrypt.compareSync(password, userFound.password);
+    const userPassword = userFound ? userFound.password : null;
+    const companyPassword = companyFound ? companyFound.password : null;
+
+    let isCorrectPass = false;
+
+    if (userPassword) {
+        isCorrectPass = bcrypt.compareSync(password, userPassword);
+    } else if (companyPassword) {
+        isCorrectPass = bcrypt.compareSync(password, companyPassword);
+    }
 
     if (!isCorrectPass) {
         return res.status(401).json({
@@ -33,7 +42,11 @@ export const login = async (req, res) => {
         }
         const token = jwt.sign(payload, secretJWT, { expiresIn: '3h' });
         return res.status(200).json({
-            user: userFound,
+            user: {
+                name: userFound.name,
+                email: userFound.email,
+                id_company: userFound.id_company
+            },
             token: token,
             rol: userFound.position
         });
@@ -45,7 +58,10 @@ export const login = async (req, res) => {
         }
         const token = jwt.sign(payload, secretJWT, { expiresIn: '3h' });
         return res.status(200).json({
-            company: companyFound,
+            company: {
+                name: companyFound.name,
+                email: companyFound.email
+            },
             token: token,
             rol: "Admin"
         });

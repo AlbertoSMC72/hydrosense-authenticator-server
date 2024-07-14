@@ -12,8 +12,8 @@ export const getUsers = async () => {
 
 export const getUser = async (email) => {
     try {
-        const result = await config.query('SELECT * FROM users WHERE email = ?', [email]);
-        return result[0];
+        const result = await config.query('SELECT * FROM users WHERE email = ? limit 1', [email]);
+        return result[0][0];
     } catch (error) {
         throw new Error(error.message);
     }
