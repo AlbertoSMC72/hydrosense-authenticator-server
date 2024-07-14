@@ -45,7 +45,7 @@ export const login = async (req, res) => {
             user: {
                 name: userFound.name,
                 email: userFound.email,
-                id_company: userFound.id_company
+                id_company: userFound.company_ref
             },
             token: token,
             rol: userFound.position
@@ -59,6 +59,7 @@ export const login = async (req, res) => {
         const token = jwt.sign(payload, secretJWT, { expiresIn: '3h' });
         return res.status(200).json({
             company: {
+                id_company: companyFound.id_company,
                 name: companyFound.name,
                 email: companyFound.email
             },
