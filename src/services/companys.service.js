@@ -1,6 +1,7 @@
 import { getCompany, createCompany } from "../repositories/companys.repositories.js";
 import { validateCompany } from "../models/companys.model.js";
 import bcrypt from 'bcrypt';
+const saltRounds = parseInt(process.env.SALT_ROUNDS_BCRYPT);
 
 export const getCompanyService = async (email) => {
     try {
