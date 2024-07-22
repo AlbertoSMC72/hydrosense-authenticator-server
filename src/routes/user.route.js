@@ -4,7 +4,7 @@ import { verifyJWT } from '../middlewares/http/auth.middleware.js';
 
 const userRouter = Router();
 
-userRouter.get('/', getUsersController);
+userRouter.get('/company/:id_ref', getUsersController);
 userRouter.get('/:email', getUserController);
 userRouter.post('/', postUserController);
 userRouter.put('/:email', verifyJWT, putUserController);

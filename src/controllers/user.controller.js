@@ -1,7 +1,8 @@
 import { getUsersService, getUserService, createUserService, updateUserService, deleteUserService } from '../services/users.service.js';
 
 export const getUsersController = async (req, res) => {
-    getUsersService()
+    const { id_ref } = req.params;
+    getUsersService(id_ref)
         .then((users) => res.status(200).json(users))
         .catch((error) => res.status(500).send(error.message));
 };

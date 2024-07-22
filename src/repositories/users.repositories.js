@@ -1,9 +1,9 @@
 import config from '../config/config.js';
 
 
-export const getUsers = async () => {
+export const getUsers = async (id_ref) => {
     try {
-        const result = await config.query('SELECT * FROM users');
+        const result = await config.query('SELECT * FROM users WHERE company_ref = ?', [id_ref]);
         return result[0];
     } catch (error) {
         throw new Error(error.message);

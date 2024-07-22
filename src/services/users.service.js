@@ -4,10 +4,10 @@ import bcrypt from 'bcrypt';
 
 const saltRounds = parseInt(process.env.SALT_ROUNDS_BCRYPT);
 
-export const getUsersService = async () => {
+export const getUsersService = async (id_ref) => {
     try {
-        const users = await getUsers();
-        return users[0];
+        const users = await getUsers(id_ref);
+        return users;
     } catch (error) {
         throw error;
     }
